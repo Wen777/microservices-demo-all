@@ -1,4 +1,4 @@
-FROM java:openjdk-8-alpine
+FROM openjdk:8-alpine 
 
 # Install telegraf
 # The build phase will substitute the env variables INFLUX_HOSTS and INFLUX_DB in telegraf.conf for the Influx database URL(s) and database, 
