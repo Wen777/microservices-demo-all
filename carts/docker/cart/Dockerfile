@@ -29,8 +29,7 @@ RUN apk add --no-cache --virtual .build-deps wget gnupg tar && \
 
 ADD https://gist.githubusercontent.com/Wen777/52b99f7e19cd40907c1113dcc56f110d/raw/4d326b7fc80b0e4b4c358b9b0fe6413accfc5401/telegraf.conf  /etc/telegraf.conf
 
-RUN sed -i -e "s|{{INFLUX_HOSTS}}|$INFLUX_HOSTS|g" -e "s|{{INFLUX_DB}}|$INFLUX_DB|g" /etc/telegraf.conf && telegraf --config /etc/telegraf.conf
-
+RUN sed -i -e "s|{{INFLUX_HOSTS}}|$INFLUX_HOSTS|g" -e "s|{{INFLUX_DB}}|$INFLUX_DB|g" /etc/telegraf.conf 
 
 EXPOSE 8125/udp 8092/udp 8094
 
@@ -69,4 +68,6 @@ LABEL org.label-schema.vendor="Weaveworks" \
   org.label-schema.vcs-ref="${COMMIT}" \
   org.label-schema.schema-version="1.0"
 
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/urandom","-jar","./app.jar", "--port=80"]
+COPY run.sh run.sh
+
+ENTRYPOINT ["./run.sh"]
