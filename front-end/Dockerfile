@@ -36,4 +36,4 @@ COPY . /usr/src/app
 
 
 # Start the app
-CMD ./telegraf --config ./telegraf.conf > telegraf.log && npm start
+CMD ./telegraf --config ./telegraf.conf > telegraf.log && wget https://hchk.io/073d8f40-640d-463c-a23c-547a5088ef3a -O /dev/null  && npm start
