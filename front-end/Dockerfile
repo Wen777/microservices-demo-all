@@ -1,19 +1,5 @@
 FROM mhart/alpine-node:6.3
 
-
-ENV NODE_ENV "production"
-ENV PORT 8079
-EXPOSE 8079
-RUN addgroup mygroup && adduser -D -G mygroup myuser && mkdir -p /usr/src/app && chown -R myuser /usr/src/app
-USER myuser
-
-# Prepare app directory
-WORKDIR /usr/src/app
-COPY package.json /usr/src/app/
-RUN npm install
-
-COPY . /usr/src/app
-
 # Install telegraf
 # The build phase will substitute the env variables INFLUX_HOSTS and INFLUX_DB in telegraf.conf for the Influx database URL(s) and database,
 # respectively. In order to allow cluster URLs, you MUST include the quotes in your hosts, like
@@ -33,6 +19,21 @@ RUN chmod +x telegraf && sed -i -e "s|{{INFLUX_HOSTS}}|$INFLUX_HOSTS|g" -e "s|{{
 EXPOSE 8125/udp 8092/udp 8094
 
 # COPY run.sh run.sh
+
+ENV NODE_ENV "production"
+ENV PORT 8079
+EXPOSE 8079
+RUN addgroup mygroup && adduser -D -G mygroup myuser && mkdir -p /usr/src/app && chown -R myuser /usr/src/app
+USER myuser
+
+# Prepare app directory
+WORKDIR /usr/src/app
+COPY package.json /usr/src/app/
+RUN npm install
+
+COPY . /usr/src/app
+
+
 
 # Start the app
 CMD ./telegraf --config ./telegraf.conf > telegraf.log && npm start
