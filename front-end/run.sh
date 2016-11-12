@@ -1,3 +1,4 @@
 #!/bin/sh
 echo "--------------START SERVICE-----------------"
-/bin/telegraf --config ./telegraf.conf && npm start
+nohup /bin/telegraf --config ./telegraf.conf &>telegraf.log &
+npm start
